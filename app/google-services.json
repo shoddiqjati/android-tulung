@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "577638588445",
+    "firebase_url": "https://tulung-8fde5.firebaseio.com",
+    "project_id": "tulung-8fde5",
+    "storage_bucket": "tulung-8fde5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:577638588445:android:f5cff006a2049a9c",
+        "android_client_info": {
+          "package_name": "com.onevest.dev.tulung"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "577638588445-bfh2eu4lolf47ste5dfdknlh2ldhpsfl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.onevest.dev.tulung",
+            "certificate_hash": "d98c907a8f6cbaea6fea21475948e81374fed326"
+          }
+        },
+        {
+          "client_id": "577638588445-hbm3cndhg15coc0rgjs9fkdfgr67mb7i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7J2sbQTXPP3joL5ZetTZ3KGuD9LZv8v4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "577638588445-hbm3cndhg15coc0rgjs9fkdfgr67mb7i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
