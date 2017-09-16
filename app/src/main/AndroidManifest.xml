@@ -34,7 +34,7 @@
         </activity>
         <activity
             android:name=".main.activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".auth.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -44,6 +44,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".main.activity.PostActivity"></activity>
     </application>
 
 </manifest>

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,26 +63,59 @@ public class AccountFragment extends Fragment {
 
     @OnClick(R.id.phone_edit)
     public void phoneEditHandler() {
-        final Dialog dialog = new Dialog(getContext());
-        dialog.setContentView(R.layout.dialog_phone_edit);
-        Button save = (Button) dialog.findViewById(R.id.phone_edit_save);
-        final EditText phoneET = (EditText) dialog.findViewById(R.id.panic_edit_edittext);
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View view = inflater.inflate(R.layout.dialog_phone_edit, null);
+        final AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
+        Button save = (Button) view.findViewById(R.id.phone_edit_save);
+        final EditText phoneET = (EditText) view.findViewById(R.id.phone_edit_edittext);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String phone = phoneET.getText().toString();
-                String uuid = prefsManager.getUuid();
-                databaseReference.child(uuid).child(Constants.PHONE).setValue(phone)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                prefsManager.setPhone(phone);
-                                tv_phone.setText(phone);
-                                dialog.dismiss();
-                            }
-                        });
+                if (!phone.equals("")) {
+                    String uuid = prefsManager.getUuid();
+                    databaseReference.child(uuid).child(Constants.PHONE).setValue(phone)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    prefsManager.setPhone(phone);
+                                    tv_phone.setText(phone);
+                                    dialog.dismiss();
+                                }
+                            });
+                }
             }
         });
+        dialog.setView(view);
+        dialog.show();
+    }
+
+    @OnClick(R.id.emergency_edit)
+    public void panicEditHandler() {
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View view = inflater.inflate(R.layout.dialog_panic_edit, null);
+        final AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
+        Button save = (Button) view.findViewById(R.id.panic_edit_save);
+        final EditText panicET = (EditText) view.findViewById(R.id.panic_edit_edittext);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String panic = panicET.getText().toString();
+                if (!panic.equals("")) {
+                    String uuid = prefsManager.getUuid();
+                    databaseReference.child(uuid).child(Constants.PANIC).setValue(panic)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    prefsManager.setPanic(panic);
+                                    tv_panic.setText(panic);
+                                    dialog.dismiss();
+                                }
+                            });
+                }
+            }
+        });
+        dialog.setView(view);
         dialog.show();
     }
     //endregion
@@ -102,6 +136,12 @@ public class AccountFragment extends Fragment {
         ButterKnife.bind(this, view);
         tv_name.setText(prefsManager.getName());
         tv_email.setText(prefsManager.getEmail());
+        if (prefsManager.getPhone() != null) {
+            tv_phone.setText(prefsManager.getPhone());
+        }
+        if (prefsManager.getPanic() != null) {
+            tv_panic.setText(prefsManager.getPanic());
+        }
         return view;
     }
 
