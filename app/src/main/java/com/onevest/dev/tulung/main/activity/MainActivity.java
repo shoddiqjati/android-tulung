@@ -1,5 +1,6 @@
 package com.onevest.dev.tulung.main.activity;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -8,15 +9,18 @@ import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
 import android.view.View;
 
+import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.onevest.dev.tulung.R;
 import com.onevest.dev.tulung.main.adapter.MainAdapter;
 import com.onevest.dev.tulung.main.fragments.AccountFragment;
 import com.onevest.dev.tulung.main.fragments.TimelineFragment;
 import com.onevest.dev.tulung.main.fragments.WarningFragment;
+import com.onevest.dev.tulung.utils.Constants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,6 +36,50 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.fab)
     FloatingActionMenu fab;
+
+    @BindView(R.id.general_fab)
+    FloatingActionButton generalFab;
+
+    @OnClick(R.id.general_fab)
+    public void generalHandler() {
+        Intent intent = new Intent(this, PostActivity.class);
+        intent.putExtra(Constants.CATEGORY, Constants.GENERAL);
+        fab.close(true);
+        startActivity(intent);
+    }
+
+    @BindView(R.id.failed_fab)
+    FloatingActionButton failedFab;
+
+    @OnClick(R.id.failed_fab)
+    public void failedHandler() {
+        Intent intent = new Intent(this, PostActivity.class);
+        intent.putExtra(Constants.CATEGORY, Constants.FAILED);
+        fab.close(true);
+        startActivity(intent);
+    }
+
+    @BindView(R.id.fuel_fab)
+    FloatingActionButton fuelFab;
+
+    @OnClick(R.id.fuel_fab)
+    public void fuelHandler() {
+        Intent intent = new Intent(this, PostActivity.class);
+        intent.putExtra(Constants.CATEGORY, Constants.FUEL);
+        fab.close(true);
+        startActivity(intent);
+    }
+
+    @BindView(R.id.wheel_fab)
+    FloatingActionButton wheelFab;
+
+    @OnClick(R.id.wheel_fab)
+    public void wheelHandler() {
+        Intent intent = new Intent(this, PostActivity.class);
+        intent.putExtra(Constants.CATEGORY, Constants.WHEEL);
+        fab.close(true);
+        startActivity(intent);
+    }
     //endregion
 
     private int[] tabIcons = {

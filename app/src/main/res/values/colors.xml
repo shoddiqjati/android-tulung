@@ -11,4 +11,5 @@
     <color name="fab_icon">#ffffff</color>
     <color name="fab_background">#aaffffff</color>
     <color name="btn_panic">#F44336</color>
+    <color name="divider">#cfcfcf</color>
 </resources>

@@ -50,16 +50,17 @@
         android:layout_height="match_parent"
         android:layout_gravity="end|bottom"
         android:padding="@dimen/fab_margin"
+        app:layout_anchor="@id/container"
+        app:layout_anchorGravity="right"
         fab:menu_animationDelayPerItem="25"
         fab:menu_backgroundColor="@color/fab_background"
         fab:menu_colorNormal="@color/colorAccent"
         fab:menu_colorPressed="@color/colorAccentDark"
         fab:menu_fab_size="normal"
-        fab:menu_showShadow="true"
-        app:layout_anchor="@id/container"
-        app:layout_anchorGravity="right">
+        fab:menu_showShadow="true">
 
         <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/general_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_info"
@@ -69,6 +70,7 @@
 
 
         <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/failed_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_engine_failed"
@@ -77,6 +79,7 @@
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fuel_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_fuel"
@@ -85,6 +88,7 @@
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/wheel_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_wheel"
