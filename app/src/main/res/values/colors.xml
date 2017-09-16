@@ -10,4 +10,5 @@
     <color name="tab_icon">#607D8B</color>
     <color name="fab_icon">#ffffff</color>
     <color name="fab_background">#aaffffff</color>
+    <color name="btn_panic">#F44336</color>
 </resources>

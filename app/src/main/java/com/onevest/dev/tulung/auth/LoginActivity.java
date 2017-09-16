@@ -22,13 +22,22 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.onevest.dev.tulung.R;
+import com.onevest.dev.tulung.main.activity.MainActivity;
+import com.onevest.dev.tulung.utils.Constants;
+import com.onevest.dev.tulung.utils.PrefsManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,6 +66,12 @@ public class LoginActivity extends AppCompatActivity implements
     private GoogleApiClient mGoogleApiClient;
     private ProgressDialog progressDialog;
 
+    private PrefsManager prefsManager;
+    private DatabaseReference databaseReference;
+    private String uuid;
+    private String name;
+    private String email;
+
     private static final String TAG = LoginActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 9001;
 
@@ -65,9 +80,14 @@ public class LoginActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
+        prefsManager = new PrefsManager(this);
         callbackManager = new CallbackManager.Factory().create();
         mAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference(Constants.USERS);
+
+        if (prefsManager.getLoginStatus()) {
+            navigateToMainActivity();
+        }
 
         fbLoginButton.setReadPermissions("email", "public_profile");
         fbLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -101,6 +121,12 @@ public class LoginActivity extends AppCompatActivity implements
         progressDialog.setMessage(getString(R.string.login));
     }
 
+    private void navigateToMainActivity() {
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+        Log.d(TAG, "navigateToMainActivity");
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -126,7 +152,41 @@ public class LoginActivity extends AppCompatActivity implements
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     Log.d(TAG, "Auth Success");
-                    showLoginDialog(false);
+                    uuid = mAuth.getCurrentUser().getUid().toString();
+                    name = mAuth.getCurrentUser().getDisplayName().toString();
+                    email = mAuth.getCurrentUser().getEmail().toString();
+                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.hasChild(uuid)) {
+                                prefsManager.setLoginStatus(true);
+                                prefsManager.setUuid(uuid);
+                                prefsManager.setName(name);
+                                prefsManager.setEmail(email);
+                                showLoginDialog(false);
+                                navigateToMainActivity();
+                            } else {
+                                databaseReference.child(uuid).child(Constants.NAME).setValue(name);
+                                databaseReference.child(uuid).child(Constants.EMAIL).setValue(email)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                prefsManager.setLoginStatus(true);
+                                                prefsManager.setUuid(uuid);
+                                                prefsManager.setName(name);
+                                                prefsManager.setEmail(email);
+                                                showLoginDialog(false);
+                                                navigateToMainActivity();
+                                            }
+                                        });
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Log.d(TAG, databaseError.getMessage());
+                        }
+                    });
                 } else {
                     Log.d(TAG, "Auth Failed");
                     showLoginDialog(false);
@@ -150,7 +210,42 @@ public class LoginActivity extends AppCompatActivity implements
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "Auth Success");
-                            showLoginDialog(false);
+                            uuid = mAuth.getCurrentUser().getUid().toString();
+                            name = mAuth.getCurrentUser().getDisplayName().toString();
+                            email = mAuth.getCurrentUser().getEmail().toString();
+                            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.hasChild(uuid)) {
+                                        Log.d(TAG, "hasChild");
+                                        prefsManager.setLoginStatus(true);
+                                        prefsManager.setUuid(uuid);
+                                        prefsManager.setName(name);
+                                        prefsManager.setEmail(email);
+                                        showLoginDialog(false);
+                                        navigateToMainActivity();
+                                    } else {
+                                        databaseReference.child(uuid).child(Constants.NAME).setValue(name);
+                                        databaseReference.child(uuid).child(Constants.EMAIL).setValue(email)
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        prefsManager.setLoginStatus(true);
+                                                        prefsManager.setUuid(uuid);
+                                                        prefsManager.setName(name);
+                                                        prefsManager.setEmail(email);
+                                                        showLoginDialog(false);
+                                                        navigateToMainActivity();
+                                                    }
+                                                });
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    Log.d(TAG, databaseError.getMessage());
+                                }
+                            });
                         } else {
                             Log.d(TAG, "Auth Failed");
                             showLoginDialog(false);
