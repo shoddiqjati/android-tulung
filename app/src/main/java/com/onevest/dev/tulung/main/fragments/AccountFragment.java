@@ -7,19 +7,24 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.onevest.dev.tulung.R;
 import com.onevest.dev.tulung.auth.LoginActivity;
 import com.onevest.dev.tulung.utils.Constants;
@@ -60,6 +65,9 @@ public class AccountFragment extends Fragment {
     TextView tv_phone_edit;
     @BindView(R.id.emergency_edit)
     TextView tv_emergency_edit;
+
+    @BindView(R.id.accpount_rating)
+    RatingBar ratingBar;
 
     @OnClick(R.id.phone_edit)
     public void phoneEditHandler() {
@@ -123,6 +131,7 @@ public class AccountFragment extends Fragment {
     private PrefsManager prefsManager;
     private FirebaseAuth mAuth;
     private DatabaseReference databaseReference;
+    private static final String TAG = AccountFragment.class.getSimpleName();
 
     public AccountFragment() {
         // Required empty public constructor
@@ -142,6 +151,25 @@ public class AccountFragment extends Fragment {
         if (prefsManager.getPanic() != null) {
             tv_panic.setText(prefsManager.getPanic());
         }
+        databaseReference.child(prefsManager.getUuid()).child(Constants.RATING).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                try {
+                    int rating = Integer.parseInt(dataSnapshot.getValue().toString());
+                    ratingBar.setProgress(rating);
+                    ratingBar.setEnabled(false);
+                } catch (Exception e) {
+                    Log.d(TAG, e.getLocalizedMessage());
+                    ratingBar.setProgress(0);
+                    ratingBar.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("TAG", databaseError.getMessage());
+            }
+        });
         return view;
     }
 

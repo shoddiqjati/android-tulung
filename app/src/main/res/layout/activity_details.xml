@@ -39,7 +39,7 @@
                     android:src="@drawable/ic_account" />
 
                 <TextView
-                    android:id="@+id/post_account_name"
+                    android:id="@+id/detail_account_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -100,7 +100,7 @@
                     android:layout_marginLeft="4dp"
                     android:layout_marginRight="4dp">
                     <TextView
-                        android:id="@+id/address_tv"
+                        android:id="@+id/detail_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_add_location"
@@ -109,10 +109,17 @@
                         android:hint="Alamat"
                         android:textSize="14sp"
                         android:gravity="center_vertical"
-                        android:layout_toLeftOf="@id/map_view"
-                        android:textColor="@color/colorPrimary"/>
+                        android:textColor="@color/colorPrimary"
+                        tools:ignore="RtlCompat" />
                 </RelativeLayout>
             </LinearLayout>
+            <TextView
+                android:id="@+id/detail_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                tools:text="Status: masih membutuhkan bantuan"/>
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

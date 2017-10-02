@@ -15,6 +15,8 @@ public class PrefsManager {
     private static final String PANIC = "panic";
     private static final String NAME = "name";
     private static final String EMAIL = "email";
+    private static final String WAITING = "waiting";
+    private static final String HELPING = "helping";
     private static final String TAG = PrefsManager.class.getSimpleName();
 
     public PrefsManager(Context context) {
@@ -74,7 +76,7 @@ public class PrefsManager {
     }
 
     public String getPanic() {
-        String panic = sharedPreferences.getString(PHONE, null);
+        String panic = sharedPreferences.getString(PANIC, null);
         return panic;
     }
 
@@ -82,16 +84,6 @@ public class PrefsManager {
         editor.remove(PANIC);
         editor.commit();
         Log.d(TAG, "removePanic");
-    }
-
-    public void logout() {
-        setLoginStatus(false);
-        removeUuid();
-        removePhone();
-        removePanic();
-        removeName();
-        removeEmail();
-        Log.d(TAG, "logout");
     }
 
     public void setName(String name) {
@@ -126,5 +118,47 @@ public class PrefsManager {
         editor.remove(EMAIL);
         editor.commit();
         Log.d(TAG, "removeEmail");
+    }
+
+    public void setWaitingStatus(boolean waitingStatus) {
+        editor.putBoolean(WAITING, waitingStatus);
+        editor.commit();
+    }
+
+    public boolean getWaitingStatus() {
+        boolean waitingStatus = sharedPreferences.getBoolean(WAITING, false);
+        return waitingStatus;
+    }
+
+    public void removeWaitingStatus() {
+        editor.remove(WAITING);
+        editor.commit();
+    }
+
+    public void setHelpingStatus(boolean helpingStatus) {
+        editor.putBoolean(HELPING, helpingStatus);
+        editor.commit();
+    }
+
+    public boolean getHelpingStatus() {
+        boolean helpingStatus = sharedPreferences.getBoolean(HELPING, false);
+        return helpingStatus;
+    }
+
+    public void removeHelpingStatus() {
+        editor.remove(HELPING);
+        editor.commit();
+    }
+
+    public void logout() {
+        setLoginStatus(false);
+        removeUuid();
+        removePhone();
+        removePanic();
+        removeName();
+        removeEmail();
+        removeWaitingStatus();
+        removeHelpingStatus();
+        Log.d(TAG, "logout");
     }
 }

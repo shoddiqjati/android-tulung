@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.onevest.dev.tulung.NotificationHelper;
 import com.onevest.dev.tulung.R;
 import com.onevest.dev.tulung.main.adapter.TimelineAdapter;
 import com.onevest.dev.tulung.models.Post;
@@ -40,6 +41,7 @@ public class TimelineFragment extends Fragment {
     List<Post> postList;
     DatabaseReference databaseReference;
     TimelineAdapter adapter;
+    NotificationHelper notificationHelper;
 
     private static final String TAG = TimelineFragment.class.getSimpleName();
 
@@ -72,6 +74,7 @@ public class TimelineFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         databaseReference = FirebaseDatabase.getInstance().getReference(Constants.POST);
+        notificationHelper = new NotificationHelper(getContext());
     }
 
     private void updateUi() {
@@ -79,11 +82,13 @@ public class TimelineFragment extends Fragment {
             databaseReference.child(Constants.POST).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    notificationHelper.sendNotification("Ada yang membutuhkan bantuanmu");
                     postList = new ArrayList<>();
                     Post post;
                     long count = dataSnapshot.getChildrenCount();
                     for (int i = 0; i < count; count--) {
                         post = new Post();
+                        post.setId(count);
                         post.setAddress(dataSnapshot.child(String.valueOf(count)).child(Constants.ADDRESS).getValue().toString());
                         post.setCategory(dataSnapshot.child(String.valueOf(count)).child(Constants.CATEGORY).getValue().toString());
                         post.setDesc(dataSnapshot.child(String.valueOf(count)).child(Constants.POST_DESCRIPTION).getValue().toString());

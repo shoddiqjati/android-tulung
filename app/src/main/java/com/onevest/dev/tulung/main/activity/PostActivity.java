@@ -21,8 +21,6 @@ import com.onevest.dev.tulung.models.Post;
 import com.onevest.dev.tulung.utils.Constants;
 import com.onevest.dev.tulung.utils.PrefsManager;
 
-import java.util.HashMap;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -131,6 +129,9 @@ public class PostActivity extends AppCompatActivity {
                         databaseReference.child(Constants.POST_COUNTER).setValue(num).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
+                                Intent intent = new Intent(PostActivity.this, WaitActivity.class);
+                                intent.putExtra(Constants.ID, num);
+                                startActivity(intent);
                                 finish();
                             }
                         });

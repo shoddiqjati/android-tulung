@@ -41,6 +41,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.MyHold
 
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
+        final long id = postList.get(position).getId();
         final String name = postList.get(position).getName();
         final String desc = postList.get(position).getDesc();
         final String address = postList.get(position).getAddress();
@@ -65,6 +66,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.MyHold
                 intent.putExtra(Constants.POST_PEOPLE, people);
                 intent.putExtra(Constants.POST_STATUS, status);
                 intent.putExtra(Constants.POST_UUID, uuid);
+                intent.putExtra(Constants.ID, id);
                 context.startActivity(intent);
             }
         });

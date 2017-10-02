@@ -5,6 +5,7 @@ package com.onevest.dev.tulung.models;
  */
 
 public class Post {
+    private long id;
     private String uuid;
     private String name;
     private String category;
@@ -28,6 +29,14 @@ public class Post {
         this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getUuid() {

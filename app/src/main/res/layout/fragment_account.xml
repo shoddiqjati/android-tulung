@@ -27,6 +27,7 @@
             android:orientation="vertical"
             android:layout_above="@id/logout">
 
+
             <ImageView
                 android:id="@+id/avatar"
                 android:layout_width="128dp"
@@ -147,6 +148,12 @@
                         android:text="Belum diatur" />
                 </LinearLayout>
             </RelativeLayout>
+            <RatingBar
+                android:id="@+id/accpount_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:layout_gravity="center"/>
         </LinearLayout>
     </RelativeLayout>
 </FrameLayout>
